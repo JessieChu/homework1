@@ -15,7 +15,7 @@ def nominal_statistic(csv_file, numeric_attr, name):
     for column in csv_file.columns:
         if column not in numeric_attr:
             res_dict[column] = csv_file[column].value_counts().to_dict()
-    json.dump(str(res_dict), open(r'result/'+name+'_nominal_attr.json', 'w', encoding='utf-8'))
+    json.dump(str(res_dict), open(r'results/'+name+'_nominal.json', 'w', encoding='utf-8'))
 
 # 数值属性统计
 def numeric_statistic(csv_file, numeric_attr, name):
@@ -41,7 +41,7 @@ def numeric_statistic(csv_file, numeric_attr, name):
 
         result = [max_value, min_value, mean_value, Q2, [Q1, Q2, Q3], num_of_NaN]
         res_dict[column] = result
-    json.dump(res_dict, open('result/'+name+'_numeric_attr.json', 'w', encoding='utf-8'))
+    json.dump(res_dict, open('results/'+name+'_numeric.json', 'w', encoding='utf-8'))
 
 # 数据清洗
 def clean_data(csv_file, column, percent):
