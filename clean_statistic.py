@@ -6,6 +6,7 @@
 
 import json
 import copy
+import numpy as np
 
 # 标称属性统计
 def nominal_statistic(csv_file, numeric_attr, name):
@@ -40,7 +41,39 @@ def numeric_statistic(csv_file, numeric_attr, name):
         result = [max_value, min_value, mean_value, Q2, [Q1, Q2, Q3], num_of_NaN]
         res_dict[column] = result
     json.dump(res_dict, open('results/'+name+'_numeric.json', 'w', encoding='utf-8'))
+    
+# 查找两个对象间相异度最小的 指定的 column值
+def find_dis_value(csv_file, pos, column, numeric_attr):
 
+    def dis_objs(tar_obj, sou_obj):
+        dis_value = 0
+        count = 0
+        for column in tar_obj.index:
+            if tar_obj[column] != np.NaN and sou_obj[column] != np.NaN:
+                if column in numeric_attr:
+                        values_sort = csv_file[column].dropna().values.sort()
+                        denominator = values_sort[-1] - values_sort[0]
+                        dis_value += abs(tar_obj[column] - sou_obj[column])/denominator
+                        count += 1
+
+                elif tar_obj[column] == sou_obj[column]:
+                    dis_value += 1
+                count += 1
+            else:
+                continue
+        return dis_value/count
+
+    mindis = 9999
+    result_pos = -1
+    target_obj = csv_file.ix[pos]
+    for index in csv_file.index:
+        if index == pos:
+            continue
+        source_obj = csv_file.ix(index)
+        tmp = dis_objs(target_obj, source_obj)
+        if tmp < mindis:
+            result_pos = index
+    return result_pos
 # 数据清洗
 def clean_data(csv_file, column, percent):
     # 去除缺失值
