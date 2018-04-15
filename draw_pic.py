@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Apr 14 22:15:00 2018
-
 @author: jessiechu
 """
 
@@ -55,7 +53,7 @@ def draw_qq_norm(column, vc, loc):
     pass
 
 # qq图识别属性间的相关度
-def draw_qq_double(csv_file, double_column):
+def draw_qq_comparion(csv_file, double_column):
     data = csv_file[list(double_column)].dropna()
     x = data[double_column[0]].values
     y = data[double_column[1]].values
@@ -68,8 +66,8 @@ def draw_qq_double(csv_file, double_column):
     plt.close()
 
 
-# 去除缺失值 绘图函数
-def complete_dropna(csv_file, column):
+# 去除缺失值
+def final_dropna(csv_file, column):
     loc = "result_pic/final/1_"
     values_dropna = csv_file[column].dropna().values
     draw_hist(column, values_dropna, loc)
@@ -77,8 +75,8 @@ def complete_dropna(csv_file, column):
     draw_box(column, values_dropna, loc)
     pass
 
-# 用最高频率值来填补缺失值 绘图函数
-def complete_fre_attr(csv_file, column):
+# 用最高频率值来填补缺失值
+def final_fre_attr(csv_file, column):
     value_count = csv_file[column].dropna().value_counts()
     max_fre_value = value_count.index[0]
     data = csv_file[column]
@@ -92,8 +90,8 @@ def complete_fre_attr(csv_file, column):
     draw_qq_norm(column, complete_data, loc)
     draw_box(column, complete_data, loc)
 
-# 通过属性的相关关系来填补缺失值 绘图函数
-def complete_rel_attr(csv_file, double_column):
+# 通过属性的相关关系来填补缺失值
+def final_rel_attr(csv_file, double_column):
     target_data = csv_file[double_column[0]]
     source_data = csv_file[double_column[1]]
     flag1 = target_data.isnull().values
@@ -115,8 +113,8 @@ def complete_rel_attr(csv_file, double_column):
     draw_qq_norm(double_column[0], values_clean, loc)
     draw_box(double_column[0], values_clean, loc)
 
-# 通过数据对象之间的相似性来填补缺失值 绘图函数
-def complete_smi_attr(csv_file, column, numeric_attr):
+# 通过数据对象之间的相似性来填补缺失值
+def final_smi_attr(csv_file, column, numeric_attr):
     data = csv_file[column].copy()
     for index, value in data.iteritems():
         if value == np.NaN:

@@ -1,8 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Sat Apr 14 19:02:33 2018
-
 @author: jessiechu
 """
 
@@ -50,7 +48,7 @@ def clean_data(csv_file, column, percent):
     values_count = csv_file[column].dropna().value_counts()
     values_clean = list(values_dropna)
 
-    # 去除频率为1的值,对所有取值种类的频数-1，近似等效于去除频率为1的值
+    # 去除频率为1的值,对所有取值种类的频数-1
     for item in values_count.index:
         values_clean.remove(item)
 
